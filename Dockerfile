@@ -13,7 +13,5 @@ RUN mvn package -DskipTests
 
 FROM adoptopenjdk/openjdk11:alpine-slim
 # Copy the jar to the production image from the builder stage.
-COPY --from=builder /app/target/Eksamen-*.jar /Eksamen-0.0.1-SNAPSHOT.jar
-
-# Run the web service on container startup.
-CMD ["java", "-Djava.security.egdls =file:/dev/./urandom", "-jar", "/Eksamen-0.0.1-SNAPSHOT.jar"]
+COPY --from=builder /app/target/*.jar /app/Eksamen-0.0.1-SNAPSHOT.jar
+ENTRYPOINT ["java","-jar","/app/Eksamen-0.0.1-SNAPSHOT.jar"]
