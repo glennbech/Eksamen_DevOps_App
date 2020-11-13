@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController
 class PathController {
     @GetMapping(path = ["/"])
     fun home() : String{
-        return "Welcome to home page"
+        return "Welcome to home page, will this be visible?"
     }
 
     @GetMapping(path = ["/page1"])
