@@ -33,7 +33,7 @@ class PathControllerTest {
 
     @PostConstruct
     fun init(){
-        RestAssured.baseURI = "http://localhost"
+        //RestAssured.baseURI = "http://localhost"
         RestAssured.port = port
         RestAssured.basePath = "/api/cards"
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails()
