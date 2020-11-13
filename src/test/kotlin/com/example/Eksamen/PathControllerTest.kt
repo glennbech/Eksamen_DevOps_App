@@ -23,7 +23,7 @@ import javax.annotation.PostConstruct
 class PathControllerTest {
 
     @LocalServerPort
-    protected var port = 0
+    protected var port = 8080
 
     @Autowired
     private lateinit var cardService: CardService
