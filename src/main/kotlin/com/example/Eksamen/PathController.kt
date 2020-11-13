@@ -5,6 +5,10 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class PathController {
+    @GetMapping(path = ["/"])
+    fun home() : String{
+        return "Welcome to home page"
+    }
 
     @GetMapping(path = ["/page1"])
     fun page1() : String{
