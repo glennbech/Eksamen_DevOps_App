@@ -1,40 +1,39 @@
 package com.example.Eksamen
 
 import com.example.Eksamen.db.Card
+import io.micrometer.core.instrument.Counter
 import io.micrometer.core.instrument.MeterRegistry
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class SecondaryController {
+class SecondaryController(@Autowired private var meterRegistry: MeterRegistry) {
 
     //////////////////influx
-    @Autowired
-    private val meterRegistry: MeterRegistry? = null
 
-    @PostMapping(path = ["/tx"], consumes = ["application/json"], produces = ["application/json"])
-    fun addMember(@RequestBody tx: Card) {
-        meterRegistry!!.counter("txcount2", "currency", tx.name).increment()
-        meterRegistry.gauge("txcount4", 3)
-    }
+    private val counterRegistry = Counter.builder("Counter for page 1").description("Is this working?").register(meterRegistry)
+    private val gauge = meterRegistry.gauge("Gauge for /", 3)
+
+
 
     @GetMapping(path = ["/"])
     fun home() : String{
-        meterRegistry?.gauge("txcount4", 3)
+        gauge
         return "Welcome to home page, will this be visible?"
     }
 
     @GetMapping(path = ["/page1"])
-    fun page1() : String{
+    fun page1(@RequestBody card: Card) : String{
+        meterRegistry.counter("txcount2", "currency", card.name).increment()
         return "Does page 1 work?"
     }
 
     @GetMapping(path = ["/page2"])
     fun page2() : String{
+        counterRegistry.increment()
         return "Does page 2 work?"
     }
 
