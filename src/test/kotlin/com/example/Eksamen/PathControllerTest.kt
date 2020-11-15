@@ -66,40 +66,7 @@ class PathControllerTest {
         assertTrue(cardRepository.existsById(id))
     }
 
-    @Test
-    fun testGet200Page1(){
-        RestAssured.given().get("/page1")
-                .then()
-                .statusCode(200)
-    }
 
-    @Test
-    fun testGet200Page2(){
-        RestAssured.given().get("/page2")
-                .then()
-                .statusCode(200)
-    }
-
-    @Test
-    fun testGet200Page3(){
-        RestAssured.given().get("/page3")
-                .then()
-                .statusCode(200)
-    }
-
-    @Test
-    fun testGet200Page4(){
-        RestAssured.given().get("/page4")
-                .then()
-                .statusCode(200)
-    }
-
-    @Test
-    fun testGet400OnUnknownAPI(){
-        RestAssured.given().get("/doesNotExist")
-                .then()
-                .statusCode(400)
-    }
 
 
 }
