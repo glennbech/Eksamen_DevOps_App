@@ -22,8 +22,6 @@ class PathController(private val cardService: CardService, @Autowired private va
     private val counter1 = Counter.builder("Cards_counter").description("Counter for cards").register(meterRegistry)
 
 
-
-
     //@ApiOperation("Retrieve card collection information for a specific user")
     @GetMapping(path = ["/{name}"])
     fun getCardInfo(@PathVariable("name") cardName: String) : ResponseEntity<Void>{

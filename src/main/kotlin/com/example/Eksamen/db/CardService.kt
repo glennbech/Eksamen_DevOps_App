@@ -1,5 +1,8 @@
 package com.example.Eksamen.db
 
+import io.micrometer.core.instrument.Gauge
+import io.micrometer.core.instrument.MeterRegistry
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.jpa.repository.Lock
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
@@ -29,6 +32,8 @@ class CardService(
         const val CARDS_PER_PACK = 5
     }
 
+
+
     fun findByIdEager(cardId: String) : Card?{
 
         val card = cardRepository.findById(cardId).orElse(null)
@@ -43,6 +48,7 @@ class CardService(
         if(cardRepository.existsById(cardId)){
             return false
         }
+
 
         val card = Card()
         card.name = cardId
