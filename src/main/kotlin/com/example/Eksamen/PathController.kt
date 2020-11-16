@@ -25,42 +25,32 @@ class PathController(private val cardService: CardService, @Autowired private va
 
 
     private val counter1 = Counter.builder("Cards_counter").description("Counter for cards").register(meterRegistry)
-    private val timer = Timer.builder("Timer_for_API").register(meterRegistry)
+    //private
 
 
     //@ApiOperation("Retrieve card collection information for a specific user")
 
     @GetMapping(path = ["/{name}"])
     fun getCardInfo(@PathVariable("name") cardName: String) : ResponseEntity<Void>{
-        val sample: Timer.Sample = Timer.start(meterRegistry)
+
+        val longTaskTimer = LongTaskTimer.builder("long.task.timer").tags("get", "card").register(meterRegistry)
+        longTaskTimer.activeTasks()
 
         val card = cardService.findByIdEager(cardName)
         if(card == null){
             return ResponseEntity.status(400).build()
         }
 
-        counter1.increment()
+        //counter1.increment()
 
-
-        sample.stop(timer)
 
         return ResponseEntity.status(200).build()
 
     }
 
 
-
-    @PostMapping(path = ["/{name}"])
-    fun createCard(@PathVariable("name") cardName: String): ResponseEntity<Void> {
-        //counter1.increment()
-        val ok = cardService.addNewCard(cardName)
-        return if (!ok) ResponseEntity.status(400).build()
-        else ResponseEntity.status(201).build()
-    }
-
-
     @GetMapping("/allCards")
-    fun getDevices() = cardRepository.findAll()
+    fun getAllCards() = cardRepository.findAll()
             .map { CardCopyDto(it.name) }
             .also {
 
@@ -68,6 +58,20 @@ class PathController(private val cardService: CardService, @Autowired private va
 
             }
             .map { ok(it) }
+
+
+
+    @PostMapping(path = ["/{name}"])
+    fun createCard(@PathVariable("name") cardName: String): ResponseEntity<Void> {
+        counter1.increment()
+        val timer = Timer.builder("Cards_timer").register(meterRegistry)
+        timer.record(5000, TimeUnit.MILLISECONDS)
+        val ok = cardService.addNewCard(cardName)
+        return if (!ok) ResponseEntity.status(400).build()
+        else ResponseEntity.status(201).build()
+
+    }
+
 }
 
 
