@@ -42,8 +42,10 @@ class SecondaryController(@Autowired private var meterRegistry: MeterRegistry) {
 
     @GetMapping(path = ["/page1"])
     fun page1() : String{
-        counter1.increment()
-        return "Does page 1 work?"
+        return meterRegistry.more().longTaskTimer("long.task.timer.get.card").recordCallable {
+            return@recordCallable "Does page 1 work?"
+        }
+
     }
 
     @GetMapping(path = ["/page2"])

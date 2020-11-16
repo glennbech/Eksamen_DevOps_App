@@ -33,8 +33,8 @@ class PathController(private val cardService: CardService, @Autowired private va
     @GetMapping(path = ["/{name}"])
     fun getCardInfo(@PathVariable("name") cardName: String) : ResponseEntity<Void>{
 
-        val longTaskTimer = LongTaskTimer.builder("long.task.timer").tags("get", "card").register(meterRegistry)
-        longTaskTimer.activeTasks()
+//        val longTaskTimer = LongTaskTimer.builder("long.task.timer").tags("get", "card").register(meterRegistry)
+//        longTaskTimer.activeTasks()
 
         val card = cardService.findByIdEager(cardName)
         if(card == null){
