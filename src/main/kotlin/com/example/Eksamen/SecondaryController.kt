@@ -27,7 +27,7 @@ class SecondaryController(@Autowired private var meterRegistry: MeterRegistry) {
 
 
     @GetMapping(path = ["/"])
-    fun home(@RequestBody card: Card) : String{
+    fun home() : String{
         gauge
         counter1.increment()
         return "Welcome to home page, will this be visible?"
