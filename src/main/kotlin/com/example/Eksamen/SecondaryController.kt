@@ -1,13 +1,16 @@
 package com.example.Eksamen
 
 import com.example.Eksamen.db.Card
+import io.micrometer.core.annotation.Timed
 import io.micrometer.core.instrument.Counter
 import io.micrometer.core.instrument.MeterRegistry
+import io.micrometer.core.instrument.Timer
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
+import java.util.concurrent.TimeUnit
 
 
 @RestController
@@ -26,7 +29,9 @@ class SecondaryController(@Autowired private var meterRegistry: MeterRegistry) {
 
 
 
+
     @GetMapping(path = ["/"])
+    @Timed
     fun home() : String{
         gauge
         counter1.increment()
