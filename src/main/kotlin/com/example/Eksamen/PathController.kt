@@ -25,7 +25,7 @@ class PathController(private val cardService: CardService, @Autowired private va
 
 
     private val counter1 = Counter.builder("Cards_counter").description("Counter for cards").register(meterRegistry)
-    //private
+
 
 
     //@ApiOperation("Retrieve card collection information for a specific user")
@@ -50,11 +50,17 @@ class PathController(private val cardService: CardService, @Autowired private va
 
 
     @GetMapping("/allCards")
+
     fun getAllCards() = cardRepository.findAll()
             .map { CardCopyDto(it.name) }
             .also {
 
                 meterRegistry.gaugeCollectionSize("fetch.amount.of.cards", listOf(Tag.of("type", "collection")), it)
+
+                DistributionSummary.builder("retrieved.measurements.values")
+                        .publishPercentiles(.25, .5, .75)
+                        .register(meterRegistry)
+                        .record(cardRepository.count().toDouble())
 
             }
             .map { ok(it) }

@@ -42,7 +42,9 @@ class SecondaryController(@Autowired private var meterRegistry: MeterRegistry) {
 
     @GetMapping(path = ["/page1"])
     fun page1() : String{
+
         return meterRegistry.more().longTaskTimer("long.task.timer.get.card").recordCallable {
+            TimeUnit.MILLISECONDS.sleep(3500)
             return@recordCallable "Does page 1 work?"
         }
 
