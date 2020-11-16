@@ -31,7 +31,6 @@ class SecondaryController(@Autowired private var meterRegistry: MeterRegistry) {
 
 
     @GetMapping(path = ["/"])
-    @Timed
     fun home() : String{
         gauge
         counter1.increment()
@@ -39,8 +38,11 @@ class SecondaryController(@Autowired private var meterRegistry: MeterRegistry) {
     }
 
 
+
+
     @GetMapping(path = ["/page1"])
     fun page1() : String{
+        counter1.increment()
         return "Does page 1 work?"
     }
 

@@ -18,37 +18,45 @@ import org.springframework.web.bind.annotation.*
 @RestController
 class PathController(private val cardService: CardService, @Autowired private var meterRegistry: MeterRegistry) {
 
+    @Autowired
+    fun PathController(meterRegistry: MeterRegistry?) {
+        this.meterRegistry = meterRegistry!!
+    }
 
     private val counter1 = Counter.builder("Cards_counter").description("Counter for cards").register(meterRegistry)
     private val timer = Timer.builder("Timer_for_API").register(meterRegistry)
 
 
     //@ApiOperation("Retrieve card collection information for a specific user")
-    val sample: Timer.Sample = Timer.start(meterRegistry)
+
     @GetMapping(path = ["/{name}"])
     fun getCardInfo(@PathVariable("name") cardName: String) : ResponseEntity<Void>{
-        counter1.increment()
+
+        val sample: Timer.Sample = Timer.start(meterRegistry)
 
         val card = cardService.findByIdEager(cardName)
         if(card == null){
             return ResponseEntity.status(400).build()
         }
 
-
+        counter1.increment()
         sample.stop(timer)
+
         return ResponseEntity.status(200).build()
 
     }
 
 
 
-    @PutMapping(path = ["/{name}"])
+    @PostMapping(path = ["/{name}"])
     fun createCard(@PathVariable("name") cardName: String): ResponseEntity<Void> {
-        counter1.increment()
+        //counter1.increment()
         val ok = cardService.addNewCard(cardName)
         return if (!ok) ResponseEntity.status(400).build()
         else ResponseEntity.status(201).build()
     }
+
+
 
 
 }

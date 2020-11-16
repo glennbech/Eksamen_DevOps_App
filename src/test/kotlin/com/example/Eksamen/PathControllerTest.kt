@@ -59,7 +59,7 @@ class PathControllerTest {
         val id = "foo";
         //cardService.addNewCard(id)
 
-        RestAssured.given().put("/$id")
+        RestAssured.given().post("/$id")
                 .then()
                 .statusCode(201)
 
