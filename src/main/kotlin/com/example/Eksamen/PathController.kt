@@ -3,16 +3,16 @@ package com.example.Eksamen
 import com.example.Eksamen.db.CardRepository
 import com.example.Eksamen.db.CardService
 import com.example.Eksamen.dto.CardCopyDto
-import io.micrometer.core.annotation.Timed
 import io.micrometer.core.instrument.*
-import io.swagger.annotations.Api
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.ok
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RestController
 import java.util.concurrent.TimeUnit
-import kotlin.concurrent.timer
 
 //@Api(value = "/api/cards", description = "Operations on cards")
 //@RequestMapping(
@@ -23,6 +23,8 @@ import kotlin.concurrent.timer
 class PathController(private val cardService: CardService, @Autowired private var meterRegistry: MeterRegistry, private val cardRepository: CardRepository) {
 
 
+    //////////////////influx end
+    private val logger = LoggerFactory.getLogger(PathController::class.java.name)
 
     private val counter1 = Counter.builder("Cards_counter").description("Counter for cards").register(meterRegistry)
 
@@ -38,12 +40,13 @@ class PathController(private val cardService: CardService, @Autowired private va
 
         val card = cardService.findByIdEager(cardName)
         if(card == null){
+            logger.warn("Failed to get card with status: 400")
             return ResponseEntity.status(400).build()
         }
 
         //counter1.increment()
 
-
+        logger.info("Successfully fetching card with status: 200")
         return ResponseEntity.status(200).build()
 
     }
@@ -55,6 +58,7 @@ class PathController(private val cardService: CardService, @Autowired private va
             .map { CardCopyDto(it.name) }
             .also {
 
+                logger.info("Fetching all cards")
                 meterRegistry.gaugeCollectionSize("fetch.amount.of.cards", listOf(Tag.of("type", "collection")), it)
 
                 DistributionSummary.builder("retrieved.measurements.values")
@@ -73,8 +77,14 @@ class PathController(private val cardService: CardService, @Autowired private va
         val timer = Timer.builder("Cards_timer").register(meterRegistry)
         timer.record(5000, TimeUnit.MILLISECONDS)
         val ok = cardService.addNewCard(cardName)
-        return if (!ok) ResponseEntity.status(400).build()
-        else ResponseEntity.status(201).build()
+        return if (!ok){
+            logger.warn("Failed to create card with status: 400")
+            ResponseEntity.status(400).build()
+        }
+        else{
+            logger.info("Succesfully created card")
+            ResponseEntity.status(201).build()
+        }
 
     }
 
