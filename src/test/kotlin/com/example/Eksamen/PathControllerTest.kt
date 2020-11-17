@@ -66,6 +66,12 @@ class PathControllerTest {
         assertTrue(cardRepository.existsById(id))
     }
 
+    @Test
+    fun getAllCards(){
+        RestAssured.given().get("/allCards")
+                .then()
+                .statusCode(200)
+    }
 
 
 

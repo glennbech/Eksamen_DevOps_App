@@ -6,6 +6,7 @@ import com.example.Eksamen.dto.CardCopyDto
 import io.micrometer.core.instrument.*
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.ok
 import org.springframework.scheduling.annotation.Scheduled
@@ -33,7 +34,7 @@ class PathController(private val cardService: CardService, @Autowired private va
 
     //@ApiOperation("Retrieve card collection information for a specific user")
 
-    @GetMapping(path = ["/allCards/{name}"])
+    @GetMapping(path = ["/allCards/{name}"], produces = [(MediaType.APPLICATION_JSON_VALUE)])
     fun getCardInfo(@PathVariable("name") cardName: String) : ResponseEntity<Void>{
 
 //        val longTaskTimer = LongTaskTimer.builder("long.task.timer").tags("get", "card").register(meterRegistry)

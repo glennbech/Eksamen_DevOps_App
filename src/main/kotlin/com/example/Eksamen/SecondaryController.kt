@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.servlet.ModelAndView
 import java.util.concurrent.TimeUnit
 
 
@@ -30,14 +31,20 @@ class SecondaryController(@Autowired private var meterRegistry: MeterRegistry) {
 
 
 
-    @GetMapping(path = ["/"])
-    fun home() : String{
-        gauge
-        counter1.increment()
-        logger.info("Fetching homepage")
-        return "Welcome to home page, will this be visible?"
-    }
+//    @GetMapping(path = ["/"])
+//    fun home() : String{
+//        gauge
+//        counter1.increment()
+//        logger.info("Fetching homepage")
+//        return "Welcome to home page, will this be visible?"
+//    }
 
+    @GetMapping(path = ["/"])
+    fun welcome() : ModelAndView{
+        val modelAndView = ModelAndView()
+        modelAndView.viewName = "index.html"
+        return modelAndView
+    }
 
 
 
