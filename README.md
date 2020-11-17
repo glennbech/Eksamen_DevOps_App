@@ -1,0 +1,1 @@
+<a href="https://www.statuscake.com" title="Website Uptime Monitoring"><img src="https://app.statuscake.com/button/index.php?Track=5743970&Days=1&Design=2" /></a>
