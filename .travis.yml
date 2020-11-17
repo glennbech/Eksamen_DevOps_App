@@ -6,8 +6,6 @@ env:
   - GCP_PROJECT_ID=eksamen-devops
   - IMAGE=gcr.io/eksamen-devops/eksamen-devops-docker-gcp
   - CLOUDSDK_CORE_DISABLE_PROMPTS=1
-  - secure: dTvNUVoYTjM+/Chmr+GAZdxglo+Ta38N2FMX9XQYcYFI0c6Z/G7Y2tpzpTTL7WP/XSTgjGc/JjBXp+FHQq1HH52Tazo6y1RwxVzaPInUzbqLpm8Ah5dCkipU2/XzzPDJn0xw6VL+bXjOvAgtQ1EBzp6FNONkKxGnKm+fMnY5iHSRKatZD3D1PBu5AkD6E5k3oKSvDlcwHTrXVMaqgqe8MXDtQjqyExhi1F7GCg57d5kksTRl9L9tmgQmJ8YqMPnJ4U/bxxryJ/UIsU0YKfCttHtitVxeKemo7jtg6WAnlbL7soPaaj8rzOz/XRTPCPiOJ5kd6V1X6JKYBvkEiueAuU5gV0hnW27uXryJTmple3fRWKsdsqxdG++O2RGenZ4Q5aEH1bc04w7JsALJlvVlJYjTsYBIS5jhPTGK5aBhTPlTbnnE18wTF1cHdKxcm9GB3ucCyGScYMgMsB/0EcUeTsll4mWRgFBbfhhCzCbw/A7ctKLHIo0vRO+EUdxYPDphOdnE3iqP5Mu9ltzRlExojcERJSGS5fThKKElY6/hUHkTvp3Cjul/HmCKCLWHilK/T5tL7Y94NsSUKKyw4aEEacynBPOu0XVcFFkyjLxLZDpzU7qFEqAjPVAPiXh2Bz3r3WGFFbwZ61OvG4VKQoYl4eNjmKt1vUsMlfMoMtxzcCI=
-  - secure: da5cbTZXU+mF9LV0X8eapaCR4mu+T+apvEYx4Fi0UdYqwHGa4CdppHX2ioL+VTOG8vzHrf8W84I22/SowJA6bBZn3uo56fE2etweqfTEePRgVYDKZpZrvUzL8M1CTMyLyRB2q8GKABuKOMzqKxuu4PnzelH6xgvLAjmeSdkUuCi/wrE+4sJ+W0b5f7p9KGK/xAAbjlwWdgC8NLaL3mYHWJ9ZfvYWdg7goq9rUmnueMwjDJYlQg90aGZNzM0YdaWZoYt/0spzD38+qkE9V/wYYGpHTZAOQuUNfUnWhRnDAO7/EYT9+egancBC+BK4Vh3U/NZ+ZOybqTW6YnW1RwKr4/WEwDfhGAJm2po/C+d+kxLTYF9cqO5hYkC2nlUFtIISxIxE8F1KOTBL7cj2vrovor9jC+WEnIQprMOvieaBMmUPt1dln3WBFITqk6XRM7FzfRVytV0q4H5MA0TKW+J9rRzUzO3weTyZ6r4letnDmiHmP+JQlnKOvcynKLbnclHAvvMeAc6pW/itlp5Rlcnq8ZU9b6ZLFXVSue5rwK7c+5WLEmbCGvSD6VhbmfDXxsAnght/gBYXKhm16c2Ba9QNjMTQjSADLi3e7Tqalo0tN5j1fRqAa66NMEmCudjFGcxO9TnDqHCv249WFl7fNcJEDm/5gg3YPzSQ0xJl9aseqhc=
 before_install:
 - openssl aes-256-cbc -K $encrypted_81b902ed6543_key -iv $encrypted_81b902ed6543_iv
   -in eksamen-devops-f7bc3c2f300a-kopi.json.enc -out eksamen-devops-f7bc3c2f300a-kopi.json
@@ -17,7 +15,6 @@ before_install:
 - gcloud auth activate-service-account --key-file=eksamen-devops-f7bc3c2f300a-kopi.json
 - gcloud auth configure-docker
 - gcloud config set project "${GCP_PROJECT_ID}"
-- docker run -d --name influxdb -p 8086:8086 -p 8089:8089/udp -v $PWD/integration/influxdb.conf:/etc/influxdb/influxdb.conf:ro influxdb
 install: true
 script:
 - |-
