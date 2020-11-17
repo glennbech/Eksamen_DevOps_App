@@ -33,7 +33,7 @@ class PathController(private val cardService: CardService, @Autowired private va
 
     //@ApiOperation("Retrieve card collection information for a specific user")
 
-    @GetMapping(path = ["/{name}"])
+    @GetMapping(path = ["/allCards/{name}"])
     fun getCardInfo(@PathVariable("name") cardName: String) : ResponseEntity<Void>{
 
 //        val longTaskTimer = LongTaskTimer.builder("long.task.timer").tags("get", "card").register(meterRegistry)
@@ -51,6 +51,7 @@ class PathController(private val cardService: CardService, @Autowired private va
         return ResponseEntity.status(200).build()
 
     }
+
 
 
     @GetMapping("/allCards")
@@ -71,7 +72,7 @@ class PathController(private val cardService: CardService, @Autowired private va
 
 
 
-    @PostMapping(path = ["/{name}"])
+    @PostMapping(path = ["/allCards/{name}"])
     fun createCard(@PathVariable("name") cardName: String): ResponseEntity<Void> {
         counter1.increment()
         val timer = Timer.builder("Cards_timer").register(meterRegistry)
