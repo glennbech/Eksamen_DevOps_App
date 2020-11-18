@@ -24,8 +24,8 @@
         <appender-ref ref="STDOUT"/>
     </root>
 
-    <root level="debug">
-        <!-- IMPORTANT: make sure to include this line, otherwise the appender won't be used -->
-        <appender-ref ref="LogzioLogbackAppender"/>
-    </root>
+<!--    <root level="debug">-->
+<!--        &lt;!&ndash; IMPORTANT: make sure to include this line, otherwise the appender won't be used &ndash;&gt;-->
+<!--        <appender-ref ref="LogzioLogbackAppender"/>-->
+<!--    </root>-->
 </configuration>

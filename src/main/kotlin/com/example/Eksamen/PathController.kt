@@ -3,6 +3,8 @@ package com.example.Eksamen
 import com.example.Eksamen.db.CardRepository
 import com.example.Eksamen.db.CardService
 import com.example.Eksamen.dto.CardCopyDto
+import com.example.Eksamen.restDto.RestResponseFactory
+import com.example.Eksamen.restDto.WrappedResponse
 import io.micrometer.core.instrument.*
 import io.swagger.annotations.Api
 import org.slf4j.LoggerFactory
@@ -31,19 +33,17 @@ class PathController(private val cardService: CardService, @Autowired private va
 
     @RequestMapping(path = ["/allCards/{name}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @GetMapping(path = ["/allCards/{name}"], produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun getCardInfo(@PathVariable("name") cardName: String) : ResponseEntity<Void>{
-
-
+    fun getCardInfo(@PathVariable("name") cardName: String) : ResponseEntity<WrappedResponse<CardCopyDto>>{
 
         val card = cardService.findByIdEager(cardName)
         if(card == null){
-            logger.warn("Failed to get card with status: 400")
-            return ResponseEntity.status(400).build()
+            logger.error("Failed to get card with status: 400")
+            return RestResponseFactory.notFound("User $cardName not found")
         }
 
 
         logger.info("Successfully fetching card with status: 200")
-        return ResponseEntity.status(200).build()
+        return RestResponseFactory.payload(200, DtoConverter.transform(card))
 
     }
 
@@ -69,7 +69,7 @@ class PathController(private val cardService: CardService, @Autowired private va
 
 
     @PostMapping(path = ["/allCards/{name}"])
-    fun createCard(@PathVariable("name") cardName: String): ResponseEntity<Void> {
+    fun createCard(@PathVariable("name") cardName: String): ResponseEntity<WrappedResponse<Void>> {
         counter1.increment()
         val timer = Timer.builder("Cards_timer").register(meterRegistry)
         timer.record(5000, TimeUnit.MILLISECONDS)
