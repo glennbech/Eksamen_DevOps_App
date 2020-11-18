@@ -9,4 +9,5 @@ data class CardCopyDto(
 
 
         var numberOfCopies: Int? = null
+
 )

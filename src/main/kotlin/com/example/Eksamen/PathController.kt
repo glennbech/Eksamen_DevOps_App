@@ -4,23 +4,18 @@ import com.example.Eksamen.db.CardRepository
 import com.example.Eksamen.db.CardService
 import com.example.Eksamen.dto.CardCopyDto
 import io.micrometer.core.instrument.*
+import io.swagger.annotations.Api
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.ok
 import org.springframework.scheduling.annotation.Scheduled
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.util.concurrent.TimeUnit
 
-//@Api(value = "/api/cards", description = "Operations on cards")
-//@RequestMapping(
-//        path = ["/api/cards"],
-//        produces = [(MediaType.APPLICATION_JSON_VALUE)]
-//)
+
+
 @RestController
 class PathController(private val cardService: CardService, @Autowired private var meterRegistry: MeterRegistry, private val cardRepository: CardRepository) {
 
@@ -34,11 +29,11 @@ class PathController(private val cardService: CardService, @Autowired private va
 
     //@ApiOperation("Retrieve card collection information for a specific user")
 
-    @GetMapping(path = ["/allCards/{name}"], produces = [(MediaType.APPLICATION_JSON_VALUE)])
+    @RequestMapping(path = ["/allCards/{name}"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping(path = ["/allCards/{name}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun getCardInfo(@PathVariable("name") cardName: String) : ResponseEntity<Void>{
 
-//        val longTaskTimer = LongTaskTimer.builder("long.task.timer").tags("get", "card").register(meterRegistry)
-//        longTaskTimer.activeTasks()
+
 
         val card = cardService.findByIdEager(cardName)
         if(card == null){
@@ -46,7 +41,6 @@ class PathController(private val cardService: CardService, @Autowired private va
             return ResponseEntity.status(400).build()
         }
 
-        //counter1.increment()
 
         logger.info("Successfully fetching card with status: 200")
         return ResponseEntity.status(200).build()
@@ -61,9 +55,10 @@ class PathController(private val cardService: CardService, @Autowired private va
             .also {
 
                 logger.info("Fetching all cards")
-                meterRegistry.gaugeCollectionSize("fetch.amount.of.cards", listOf(Tag.of("type", "collection")), it)
+                //meterRegistry.gaugeCollectionSize("fetch.amount.of.cards", listOf(Tag.of("type", "collection")), it)
+                meterRegistry.gauge("amount.of.cards.initialized", it.size)
 
-                DistributionSummary.builder("retrieved.measurements.values")
+                DistributionSummary.builder("amount.of.cards.added.after.init")
                         .publishPercentiles(.25, .5, .75)
                         .register(meterRegistry)
                         .record(cardRepository.count().toDouble())

@@ -41,6 +41,7 @@ class SecondaryController(@Autowired private var meterRegistry: MeterRegistry) {
 
     @GetMapping(path = ["/"])
     fun welcome() : ModelAndView{
+        counter1.increment()
         val modelAndView = ModelAndView()
         modelAndView.viewName = "index.html"
         return modelAndView
