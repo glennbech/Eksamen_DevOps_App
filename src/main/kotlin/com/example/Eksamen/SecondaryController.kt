@@ -31,13 +31,6 @@ class SecondaryController(@Autowired private var meterRegistry: MeterRegistry) {
 
 
 
-//    @GetMapping(path = ["/"])
-//    fun home() : String{
-//        gauge
-//        counter1.increment()
-//        logger.info("Fetching homepage")
-//        return "Welcome to home page, will this be visible?"
-//    }
 
     @GetMapping(path = ["/"])
     fun welcome() : ModelAndView{
