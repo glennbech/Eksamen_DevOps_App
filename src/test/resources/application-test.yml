@@ -14,3 +14,11 @@ spring:
   main:
     allow-bean-definition-overriding: true
 
+management:
+  metrics:
+    export:
+      influx:
+        enabled: false
+
+logging:
+  config: src/main/resources/logback-local.xml
