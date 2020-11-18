@@ -7,11 +7,3 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: create-drop
-
-management:
-  metrics:
-    export:
-      influx:
-        enabled: false
-logging:
-  config: src/main/resources/logback-logzio.xml

@@ -20,5 +20,3 @@ management:
       influx:
         enabled: false
 
-logging:
-  config: src/main/resources/logback-local.xml
