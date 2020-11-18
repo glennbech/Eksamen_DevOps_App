@@ -22,6 +22,7 @@
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
     </properties>
 
+
     <dependencies>
 
 
@@ -158,6 +159,12 @@
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <artifactId>kotlin-maven-plugin</artifactId>
