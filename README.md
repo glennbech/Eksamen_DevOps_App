@@ -1,8 +1,19 @@
 <a href="https://www.statuscake.com" title="Website Uptime Monitoring"><img src="https://app.statuscake.com/button/index.php?Track=5743970&Days=1&Design=2" /></a>
 [![Build Status](https://travis-ci.com/joakimstolen/Eksamen_DevOps_App.svg?token=2oGxk1NA54S8kvu1Qqs9&branch=master)](https://travis-ci.com/joakimstolen/Eksamen_DevOps_App)
-
+# Application for PGR301 Exam
 ## About
 Eksamensoppgave for PGR301 DevOps i skyen på Høyskolen Kristiania. Dette er applikasjons-repositoryet. Infrastrukturen til eksamen kan ses her: https://github.com/joakimstolen/Eksamen_DevOps_Terraform 
+
+## Notes
+Applikasjonen bruker:
+ * Spring Boot 
+ * Kotlin
+ * H2 database 
+ * RestAssured til tester
+ * Logzio til logging
+ * InfluxDB for metrikker
+ * Travis til å bygge nytt Docker container image hver gang master branch endrer seg. Docker image pushes til Google Cloud Platform sitt Container Registry.  
+ 
 
 ## Kjøre applikasjonen
 * Start InfluxDB ved å kjøre: 
@@ -20,6 +31,11 @@ Eksamensoppgave for PGR301 DevOps i skyen på Høyskolen Kristiania. Dette er ap
 * For å legge til et kort: bruk f.eks Postman til å sende en POST-request med et nytt "kort" ved å kjøre `localhost/8080/allCards/"valgt navn"`
 * Kortet som er lagt til, vil nå listes på `localhost:8080/allCards`. 
 * For å se detaljene til et valgt kort: besøk f.eks `localhost:8080/allCards/Bulbasaur`    
+
+## Setting Keys & Secrets
+* ` travis encrypt-file "dittfilnavn.json" --add`
+
+
 ## Oppgave-sjekkliste 
 - [X] Krav til applikasjonen:  
     - [X] Applikasjonen skal eksponere et REST API og ha en database, gjerne "in memory" for eksempel H2 
