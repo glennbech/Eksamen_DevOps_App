@@ -35,6 +35,7 @@ class SecondaryController(@Autowired private var meterRegistry: MeterRegistry) {
     fun welcome() : ModelAndView{
         counter1.increment()
 
+        logger.info("Welcome to homepage")
         //Displaying a basic html page
         val modelAndView = ModelAndView()
         modelAndView.viewName = "index.html"

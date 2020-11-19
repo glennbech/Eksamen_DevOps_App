@@ -14,12 +14,20 @@ Applikasjonen bruker:
  * InfluxDB for metrikker
  * Travis til å bygge nytt Docker container image hver gang master branch endrer seg. Docker image pushes til Google Cloud Platform sitt Container Registry.  
  
+ 
+ ## Oppsett til Travis-CI og GCP
+ 1. Lag en Service account med Storage Admin-rolle i GCP
+ 2. Hent JSON-nøkkel for service accounten og legg i rot-mappe
+ 3. Krypter nøkkelen med `travis encrypt-file "dittfilnavn.json" --add` (bytt ut "dittfilnavn.json med korrekt navn)
+ 
 
 ## Kjøre applikasjonen
-* Start InfluxDB ved å kjøre: 
-    * `docker run --rm influxdb:1.0 influxd config > influxdb.conf`
+* Start InfluxDB ved å kjøre:
+    * 1:  
+        * `docker run --rm influxdb:1.0 influxd config > influxdb.conf`
      
-    * `docker run --name influxdb \
+    * 2:  
+        *   `docker run --name influxdb \
         -p 8083:8083 -p 8086:8086 -p 25826:25826/udp \
         -v $PWD/influxdb:/var/lib/influxdb \
         -v $PWD/influxdb.conf:/etc/influxdb/influxdb.conf:ro \
@@ -31,6 +39,7 @@ Applikasjonen bruker:
 * For å legge til et kort: bruk f.eks Postman til å sende en POST-request med et nytt "kort" ved å kjøre `localhost/8080/allCards/"valgt navn"`
 * Kortet som er lagt til, vil nå listes på `localhost:8080/allCards`. 
 * For å se detaljene til et valgt kort: besøk f.eks `localhost:8080/allCards/Bulbasaur`    
+
 
 ## Setting Keys & Secrets
 * `travis encrypt-file "dittfilnavn.json" --add`
@@ -57,15 +66,15 @@ Applikasjonen bruker:
 - [X] Oppgave 3: Logger
     - [X] Bruker Logz.io for innsamling, visualisering og analyse av logger
     - [X] Applikasjonen er konfigurert slik at den både logger lokalt til stdout, og leverer logger til Logz.io
-- [X] Oppgave 4: Infrastruktur
+- [X] Oppgave 4: Infrastruktur (Se Infrastruktur repository)
     - [X] Eget repository for Terraformkode
     - [X] Travis pipeline som kan kjøre Terraform deploye infrastruktur til for eksempel Google Cloud
     - [X] En Google Cloud Run applikasjon som skal gjøres tilgjengelig på Internet
     - [X] Cloud run applikasjkonen skal kjøre container image som allerede finnes i Container Registry fra oppgave #1
-- [X] Oppgave 5: Overvåkning og varsling
+- [X] Oppgave 5: Overvåkning og varsling (Se Infrastruktur repository)
     - [X] Implementere overvåkning, og varsling i applikasjonen ved hjelp av SAAS tjenesten StatusCake
     - [X] Infrastrukturen skal opprettes ved hjelp av Terraform
-- [X] Oppgave 6: Valgfri IAC
+- [X]  Oppgave 6: Valgfri IAC (Se Infrastruktur repository)
     - [X] Implementert OpsGenie   
-    - [X] Oppretter en eksempel-varslingsgruppe med eksempel-medlemmer  
+    - [X] Oppretter en eksempel-varslingsgruppe med eksempel-medlemmer, i tillegg til en timeplan for hvilke brukere som skal ha tilsyn  
     - [X] Brukes til varsling   

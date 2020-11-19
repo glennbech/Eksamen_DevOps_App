@@ -33,7 +33,7 @@ internal class CardServiceTest{
 
 
     @Test
-    fun testCreateUser(){
+    fun testCreateCard(){
         val id = "foo"
         assertTrue(cardService.addNewCard(id))
         assertTrue(cardRepository.existsById(id))
