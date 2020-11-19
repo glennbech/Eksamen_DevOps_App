@@ -33,9 +33,10 @@ Applikasjonen bruker:
 * For å se detaljene til et valgt kort: besøk f.eks `localhost:8080/allCards/Bulbasaur`    
 
 ## Setting Keys & Secrets
-* ` travis encrypt-file "dittfilnavn.json" --add`
-
-
+* `travis encrypt-file "dittfilnavn.json" --add`
+* `travis encrypt GCP_PROJECT_ID=eksamen-devops --add`
+* `travis encrypt IMAGE=gcr.io/eksamen-devops/eksamen-devops-docker-gcp --add`
+    * Merk: I dette prosjektet er GCP_PROJECT_ID og IMAGE satt til denne applikasjonens GCP-navn og container i Container Registry i GCP. For å bruke et annet, endre det til ønskede verdier. 
 ## Oppgave-sjekkliste 
 - [X] Krav til applikasjonen:  
     - [X] Applikasjonen skal eksponere et REST API og ha en database, gjerne "in memory" for eksempel H2 
