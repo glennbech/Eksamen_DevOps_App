@@ -21,14 +21,10 @@ import java.util.concurrent.TimeUnit
 @RestController
 class PathController(private val cardService: CardService, @Autowired private var meterRegistry: MeterRegistry, private val cardRepository: CardRepository) {
 
-
-    //////////////////influx end
     private val logger = LoggerFactory.getLogger(PathController::class.java.name)
 
     private val counter1 = Counter.builder("Cards_counter").description("Counter for cards").register(meterRegistry)
 
-
-    //@ApiOperation("Retrieve card collection information for a specific user")
 
     @RequestMapping(path = ["/allCards/{name}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @GetMapping(path = ["/allCards/{name}"], produces = [MediaType.APPLICATION_JSON_VALUE])
@@ -54,9 +50,11 @@ class PathController(private val cardService: CardService, @Autowired private va
             .also {
 
                 logger.info("Fetching all cards")
-                //meterRegistry.gaugeCollectionSize("fetch.amount.of.cards", listOf(Tag.of("type", "collection")), it)
+
+                //Gauge for how many cards is present at initialization
                 meterRegistry.gauge("amount.of.cards.initialized", it.size)
 
+                //Distribution summary checking how many cards are added after initialization. Updates every time card is added
                 DistributionSummary.builder("amount.of.cards.added.after.init")
                         .publishPercentiles(.25, .5, .75)
                         .register(meterRegistry)
@@ -69,12 +67,15 @@ class PathController(private val cardService: CardService, @Autowired private va
 
     @PostMapping(path = ["/allCards/{name}"])
     fun createCard(@PathVariable("name") cardName: String): ResponseEntity<WrappedResponse<Void>> {
+        //Counter registering each time a card has been created
         counter1.increment()
+
+        //Timer for checking the cards being created
         val timer = Timer.builder("Cards_timer").register(meterRegistry)
         timer.record(5000, TimeUnit.MILLISECONDS)
         val ok = cardService.addNewCard(cardName)
         return if (!ok){
-            logger.warn("Failed to create card with status: 400")
+            logger.error("Failed to create card with status: 400")
             ResponseEntity.status(400).build()
         }
         else{

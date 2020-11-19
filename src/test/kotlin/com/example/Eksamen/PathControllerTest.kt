@@ -35,7 +35,6 @@ class PathControllerTest {
     fun init(){
         RestAssured.baseURI = "http://localhost"
         RestAssured.port = port
-        //RestAssured.basePath = "/api/cards"
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails()
     }
 
@@ -57,7 +56,6 @@ class PathControllerTest {
     @Test
     fun testCreateCard(){
         val id = "foo";
-        //cardService.addNewCard(id)
 
         RestAssured.given().post("/allCards/$id")
                 .then()

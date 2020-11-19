@@ -26,7 +26,6 @@ class SecondaryController(@Autowired private var meterRegistry: MeterRegistry) {
     private val logger = LoggerFactory.getLogger(PathController::class.java.name)
 
     private val counter1 = Counter.builder("Home_counter").description("Counter for cards").register(meterRegistry)
-    private val gauge = meterRegistry.gauge("Gauge for /", 3)
 
 
 
@@ -35,6 +34,8 @@ class SecondaryController(@Autowired private var meterRegistry: MeterRegistry) {
     @GetMapping(path = ["/"])
     fun welcome() : ModelAndView{
         counter1.increment()
+
+        //Displaying a basic html page
         val modelAndView = ModelAndView()
         modelAndView.viewName = "index.html"
         return modelAndView
@@ -46,6 +47,8 @@ class SecondaryController(@Autowired private var meterRegistry: MeterRegistry) {
     fun page1() : String{
 
         logger.info("Fetching page1")
+
+        //Adding a long task timer, which will record the time it takes to return page1. Added sleep() to make it seem like a longer task
         return meterRegistry.more().longTaskTimer("long.task.timer.get.card").recordCallable {
             TimeUnit.MILLISECONDS.sleep(3500)
             return@recordCallable "Does page 1 work?"

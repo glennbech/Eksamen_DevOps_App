@@ -28,11 +28,6 @@ class CardService(
         private val cardRepository: CardRepository
 ) {
 
-    companion object{
-        const val CARDS_PER_PACK = 5
-    }
-
-
 
     fun findByIdEager(cardId: String) : Card?{
 

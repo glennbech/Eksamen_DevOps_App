@@ -58,10 +58,4 @@ class SecondaryControllerTest {
                 .statusCode(200)
     }
 
-//    @Test
-//    fun testGet400OnUnknownAPI(){
-//        RestAssured.given().get("/doesNotExist")
-//                .then()
-//                .statusCode(400)
-//    }
 }
