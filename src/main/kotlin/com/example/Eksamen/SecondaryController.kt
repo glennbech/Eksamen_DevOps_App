@@ -4,6 +4,7 @@ import io.micrometer.core.instrument.Counter
 import io.micrometer.core.instrument.MeterRegistry
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpMethod
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.servlet.ModelAndView
@@ -25,7 +26,7 @@ class SecondaryController(@Autowired private var meterRegistry: MeterRegistry) {
 
     private val logger = LoggerFactory.getLogger(PathController::class.java.name)
 
-    private val counter1 = Counter.builder("Home_counter").description("Counter for cards").register(meterRegistry)
+    //private val counter1 = Counter.builder("Home_counter").description("Counter for cards").register(meterRegistry)
 
 
 
@@ -33,7 +34,7 @@ class SecondaryController(@Autowired private var meterRegistry: MeterRegistry) {
 
     @GetMapping(path = ["/"])
     fun welcome() : ModelAndView{
-        counter1.increment()
+        meterRegistry.counter("home.get.requests", "uri", "/", "method", HttpMethod.GET.toString()).increment()
 
         logger.info("Welcome to homepage")
         //Displaying a basic html page

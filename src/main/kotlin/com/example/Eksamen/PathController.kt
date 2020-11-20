@@ -5,17 +5,16 @@ import com.example.Eksamen.db.CardService
 import com.example.Eksamen.dto.CardCopyDto
 import com.example.Eksamen.restDto.RestResponseFactory
 import com.example.Eksamen.restDto.WrappedResponse
-import io.micrometer.core.instrument.*
-import io.swagger.annotations.Api
+import io.micrometer.core.instrument.DistributionSummary
+import io.micrometer.core.instrument.MeterRegistry
+import io.micrometer.core.instrument.Timer
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.ok
-import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.web.bind.annotation.*
-import java.util.concurrent.TimeUnit
-
 
 
 @RestController
@@ -23,7 +22,7 @@ class PathController(private val cardService: CardService, @Autowired private va
 
     private val logger = LoggerFactory.getLogger(PathController::class.java.name)
 
-    private val counter1 = Counter.builder("Cards_counter").description("Counter for cards").register(meterRegistry)
+
 
 
     @RequestMapping(path = ["/allCards/{name}"], produces = [MediaType.APPLICATION_JSON_VALUE])
@@ -39,9 +38,7 @@ class PathController(private val cardService: CardService, @Autowired private va
 
         logger.info("Successfully fetching card with status: 200")
         return RestResponseFactory.payload(200, DtoConverter.transform(card))
-
     }
-
 
 
     @GetMapping("/allCards")
@@ -61,18 +58,20 @@ class PathController(private val cardService: CardService, @Autowired private va
                         .record(cardRepository.count().toDouble())
 
             }
-            .map { ok(it) }
+            .map {
+                ok(it)
+            }
 
 
 
     @PostMapping(path = ["/allCards/{name}"])
     fun createCard(@PathVariable("name") cardName: String): ResponseEntity<WrappedResponse<Void>> {
         //Counter registering each time a card has been created
-        counter1.increment()
+        meterRegistry.counter("post.requests", "uri", "/allCards/{name}", "method", HttpMethod.POST.toString()).increment()
 
-        //Timer for checking the cards being created
-        val timer = Timer.builder("Cards_timer").register(meterRegistry)
-        timer.record(5000, TimeUnit.MILLISECONDS)
+        //Timer for the cards being created
+        var sample: Timer.Sample = Timer.start(meterRegistry)
+
         val ok = cardService.addNewCard(cardName)
         return if (!ok){
             logger.error("Failed to create card with status: 400")
@@ -80,8 +79,11 @@ class PathController(private val cardService: CardService, @Autowired private va
         }
         else{
             logger.info("Succesfully created card")
+            //Stop the timer when its created
+            sample.stop(meterRegistry.timer("my.timer", "response", ResponseEntity.status(201).toString()))
             ResponseEntity.status(201).build()
         }
+
 
     }
 
