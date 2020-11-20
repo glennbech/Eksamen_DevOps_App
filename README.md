@@ -34,11 +34,11 @@ Applikasjonen bruker:
         -v $PWD/types.db:/usr/share/collectd/types.db:ro \
         influxdb:1.0`
 *  Kjør applikasjonen fra EksamenApplication.kt
-* Besøk `localhost:8080`
-* For å liste ut alle "kortene": besøk `localhost:8080/allCards`. Her legges det til 5 kort når applikasjonen kjøres
-* For å legge til et kort: bruk f.eks Postman til å sende en POST-request med et nytt "kort" ved å kjøre `localhost/8080/allCards/"valgt navn"`
-* Kortet som er lagt til, vil nå listes på `localhost:8080/allCards`. 
-* For å se detaljene til et valgt kort: besøk f.eks `localhost:8080/allCards/Bulbasaur`    
+* Besøk `localhost:8080` eller `https://eksamen-cloud-run-valid-6dls4qicva-uc.a.run.app/`
+* For å liste ut alle "kortene": besøk `localhost:8080/allCards` eller `https://eksamen-cloud-run-valid-6dls4qicva-uc.a.run.app/allCards`. Her legges det til 5 kort når applikasjonen kjøres
+* For å legge til et kort: bruk f.eks Postman til å sende en POST-request med et nytt "kort" ved å kjøre `localhost/8080/allCards/"valgt navn"` eller `https://eksamen-cloud-run-valid-6dls4qicva-uc.a.run.app/allCards/"valgt navn"`
+* Kortet som er lagt til, vil nå listes på `localhost:8080/allCards` eller `https://eksamen-cloud-run-valid-6dls4qicva-uc.a.run.app/allCards`. 
+* For å se detaljene til et valgt kort: besøk f.eks `localhost:8080/allCards/Bulbasaur` eller `https://eksamen-cloud-run-valid-6dls4qicva-uc.a.run.app/allCards/Bulbasaur`    
 
 
 ## Setting Keys & Secrets

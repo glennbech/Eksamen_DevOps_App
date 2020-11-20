@@ -41,6 +41,7 @@ class CardService(
 
     fun addNewCard(cardId: String) : Boolean{
 
+
         if(cardRepository.existsById(cardId)){
             return false
         }
