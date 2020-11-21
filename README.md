@@ -46,6 +46,19 @@ Applikasjonen bruker:
 * `travis encrypt GCP_PROJECT_ID=eksamen-devops --add`
 * `travis encrypt IMAGE=gcr.io/eksamen-devops/eksamen-devops-docker-gcp --add`
     * Merk: I dette prosjektet er GCP_PROJECT_ID og IMAGE satt til denne applikasjonens GCP-navn og container i Container Registry i GCP. For å bruke et annet, endre det til ønskede verdier. 
+
+## Metrikker
+### Gauge
+Bruker en gauge til å sjekke hvor mange kort som er lagt til når endpointet "/allCards" kalles på. Når programmet initialiseres vil det legges til 5 standard kort. Disse vil alltid legges til. Legger du til et kort før "/allCards" kalles på vil gaugen øke. 
+### Counter
+Bruker counter til å telle hvor mange ganger GET kalles på i endpointet "/" og hvor mange ganger POST kalles på i enpointet "/allCards/{name}".
+### Timer
+Bruker timer til å sjekke hvor lang tid det tar å lage et nytt kort. Timeren brukes altså i POST-metoden createCard. 
+### Long Task Timer
+Slet litt med implementasjonen for denne, men la til et eksempel med Long task timer i SecondaryController-klassen, der jeg la til en sleep() metode for å late som det tar lenger tid å hente endpointet "/page1". 
+### Distribution Summary
+La til Distribution Summary i POST-metoden createCards for å sjekke hvor mange kort som lages etter applikasjonen er initialisert.  
+
 ## Oppgave-sjekkliste 
 - [X] Krav til applikasjonen:  
     - [X] Applikasjonen skal eksponere et REST API og ha en database, gjerne "in memory" for eksempel H2 
