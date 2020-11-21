@@ -47,6 +47,11 @@ Applikasjonen bruker:
 * `travis encrypt IMAGE=gcr.io/eksamen-devops/eksamen-devops-docker-gcp --add`
     * Merk: I dette prosjektet er GCP_PROJECT_ID og IMAGE satt til denne applikasjonens GCP-navn og container i Container Registry i GCP. For å bruke et annet, endre det til ønskede verdier. 
 
+## Docker 
+Docker kjører i et multistage build. 
+1. Build Image Stage:  Først kompilerer og bygger den koden, så lager den en "/app" katalog som POM-filen blir kopiert til. Så kjøres ``mvn package``.
+2. Production Image Stage: Setter base-imaget til å være AdoptOpenJdk11. WORKDIR settes til "/app". Deretter kopieres JAR-filene fra katalogen til kontaineren. 
+
 ## Metrikker
 ### Gauge
 Bruker en gauge til å sjekke hvor mange kort som er lagt til når endpointet "/allCards" kalles på. Når programmet initialiseres vil det legges til 5 standard kort. Disse vil alltid legges til. Legger du til et kort før "/allCards" kalles på vil gaugen øke. 
